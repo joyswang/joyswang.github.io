@@ -177,49 +177,6 @@ $(document).ready(function(){
 });
 </script>
 {% endif %}
-
-{% if site.duoshuo_shortname %}
-<script type="text/javascript">
-  var duoshuoQuery = {short_name:"{{ site.duoshuo_shortname }}"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0]
-    || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
-</script>
-{% endif %}
-{% if site.disqus_shortname %}
-<script type="text/javascript">
-var disqus_shortname = '{{ site.disqus_shortname }}';
-(function(){
-  var dsq = document.createElement('script');
-  dsq.type = 'text/javascript';
-  dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-}());
-(function(){
-  var dsq = document.createElement('script');
-  dsq.type = 'text/javascript';
-  dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-}());
-</script>
-{% endif %}
-{% if site.yungentie_productkey and page.layout == 'default' %}
-<!-- JavaScript 配置 -->
-<script>var yunModuleEnv = true;</script>
-<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-<script>
-  var yunTieProductKey = "{{ site.yungentie_productkey }}";
-  Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vZXh0ZW5kL2xpc3Rfam9pbl9zY3JpcHQuaHRtbA==", true);
-</script>
-{% endif %}
-
 <!--
 {% if page.layout == 'tags' or page.layout == 'categories' %}
 <script type="text/javascript">

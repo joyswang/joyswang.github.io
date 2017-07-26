@@ -114,18 +114,18 @@ links:
   开源中国: http://www.oschina.net/
 
 #### Comment
-duoshuo_shortname:    ## e.g. wuchong      your duoshuo short name.       website: http://duoshuo.com
-disqus_shortname:     ## e.g. wuchong      your disqus short name.        website: http://disqus.com
-hypercomments_id:     ## e.g. 91510        your hypercomments widget id.  website: http://hypercomments.com
-yungentie_productkey: ## your netease yungentie product key.              website: https://gentie.163.com
+#duoshuo_shortname:    ## e.g. wuchong      your duoshuo short name.       website: http://duoshuo.com
+#disqus_shortname:     ## e.g. wuchong      your disqus short name.        website: http://disqus.com
+#yungentie_productkey: ## your netease yungentie product key.              website: https://gentie.163.com
+#uyan_shortname: 2139985
 ## set only one of them
 ## duoshuo will be shutting down on June 1, 2017
 
 #### Share button
 jiathis:
-  enable: false ## if you use jiathis as your share tool,the built-in share tool won't be display.
+  enable: true ## if you use jiathis as your share tool,the built-in share tool won't be display.
   id:    ## e.g. 1889330 your jiathis ID.
-  tsina: ## e.g. 2176287895 Your weibo id,It will be used in share button.
+  tsina: 5753826279 ## e.g. 2176287895 Your weibo id,It will be used in share button.
 
 #### Analytics
 google_analytics:
