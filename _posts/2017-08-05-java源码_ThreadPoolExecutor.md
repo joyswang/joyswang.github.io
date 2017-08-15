@@ -8,6 +8,7 @@ categories:
 tags:
 - spring
 - java
+- 源码
 ---
 
 我们通过源码来瞅瞅java的线程池是如何实现的。
@@ -428,7 +429,7 @@ private Runnable getTask() {
 
 * 看到这里，线程池的总体流程就出来了。
 1. 通过入口execute调用方法
-2. 判断当前线程池中的总线程数量是否小于```corePoolSize```，小于则直接添加一个线程worker1；大于则把runnable添加到队列中，但是数量不能大于```maximumPoolSize```和```CAPACITY```
+2. 判断当前线程池中的总线程数量是否小于```corePoolSize```，小于则直接添加一个线程worker1；大于则把runnable添加到队列中，如果添加到队列失败，则会想线程池中添加非核心线程，但是线程数量不能大于```maximumPoolSize```和```CAPACITY```
 3. 如果worker1运行完firstTask，则会继续从线程池中获取task。获取线程时，使用take还是poll根据```allowCoreThreadTimeOut```和```wc > corePoolSize```来确定，超时时间根据```keepAliveTime```来确定
 4. 如果线程队列为空，并且已经超时，则关闭当前worker1。如果```timed```为false的话，则worker1不会关闭。
 
