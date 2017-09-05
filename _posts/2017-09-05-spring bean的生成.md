@@ -1,6 +1,6 @@
 ---
 layout: post
-title: springÔ´Âë-spring³õÊ¼»¯Ê±beanµÄÉú³É
+title: springæºç -springåˆå§‹åŒ–æ—¶beançš„ç”Ÿæˆ
 date: 2017-09-05 16:21:00
 categories:
 - java
@@ -8,167 +8,167 @@ categories:
 tags:
 - spring
 - java
-- Ô´Âë
+- æºç 
 ---
 
-ÔÚspringÖĞ£¬ÎÒÃÇ¿ÉÒÔÍ¨¹ıxml»ò×¢½âµÄ·½Ê½È¥ÅäÖÃÒ»¸öbean£¬ÅäÖÃºÃºó£¬ÔÚspringÆô¶¯µÄÊ±ºò£¬spring»á¸ù¾İÅäÖÃµÄÊôĞÔÈ¥ÊµÀı»¯Õâ¸öbean£¬ÓĞ¿ÉÄÜÊÇµ¥ÀıµÄ£¬Ò²ÓĞ¿ÉÄÜÊÇ¶àÀıµÄ¡£
-ÕâÀï²»»á¶ÔspringÈçºÎÊÕ¼¯beanÊôĞÔ×ö¹ı¶àµÄËµÃ÷£¬Ç°ÃæÓĞÒ»Æª²©ÎÄÒÑ¾­¶ÔxmlµÄbeanÊôĞÔ½âÎö×ö¹ıËµÃ÷ÁË£¬ÕâÀïÖ÷ÒªÏëÒªÁÄµÃ»¹ÊÇspringÔÚÆô¶¯µÄÊ±ºò£¬ÊÇÈçºÎÉú³ÉÒ»¸ö¸öµÄbean¶ÔÏóµÄ¡£
+åœ¨springä¸­ï¼Œæˆ‘ä»¬å¯ä»¥é€šè¿‡xmlæˆ–æ³¨è§£çš„æ–¹å¼å»é…ç½®ä¸€ä¸ªbeanï¼Œé…ç½®å¥½åï¼Œåœ¨springå¯åŠ¨çš„æ—¶å€™ï¼Œspringä¼šæ ¹æ®é…ç½®çš„å±æ€§å»å®ä¾‹åŒ–è¿™ä¸ªbeanï¼Œæœ‰å¯èƒ½æ˜¯å•ä¾‹çš„ï¼Œä¹Ÿæœ‰å¯èƒ½æ˜¯å¤šä¾‹çš„ã€‚
+è¿™é‡Œä¸ä¼šå¯¹springå¦‚ä½•æ”¶é›†beanå±æ€§åšè¿‡å¤šçš„è¯´æ˜ï¼Œå‰é¢æœ‰ä¸€ç¯‡åšæ–‡å·²ç»å¯¹xmlçš„beanå±æ€§è§£æåšè¿‡è¯´æ˜äº†ï¼Œè¿™é‡Œä¸»è¦æƒ³è¦èŠå¾—è¿˜æ˜¯springåœ¨å¯åŠ¨çš„æ—¶å€™ï¼Œæ˜¯å¦‚ä½•ç”Ÿæˆä¸€ä¸ªä¸ªçš„beanå¯¹è±¡çš„ã€‚
 
-### getBean·½·¨
+### getBeanæ–¹æ³•
 
-Í¨¹ı¸ú×ÙspringµÄÔ´Âë£¬»á·¢ÏÖbean¶ÔÏó¶¼ÊÇÍ¨¹ı```AbstractBeanFactory.getBean(²ÎÊı)```·½·¨À´Éú³ÉµÄ¡£
-```AbstractBeanFactory.getBean(²ÎÊı)```·½·¨Êµ¼ÊÉÏ»áÈ¥µ÷ÓÃ```doGetBean(²ÎÊı)```
+é€šè¿‡è·Ÿè¸ªspringçš„æºç ï¼Œä¼šå‘ç°beanå¯¹è±¡éƒ½æ˜¯é€šè¿‡```AbstractBeanFactory.getBean(å‚æ•°)```æ–¹æ³•æ¥ç”Ÿæˆçš„ã€‚
+```AbstractBeanFactory.getBean(å‚æ•°)```æ–¹æ³•å®é™…ä¸Šä¼šå»è°ƒç”¨```doGetBean(å‚æ•°)```
 
-### doGetBean·½·¨
+### doGetBeanæ–¹æ³•
 
 ```java
 
-    protected <T> T doGetBean(String name, Class<T> requiredType, final Object[] args, boolean typeCheckOnly) throws BeansException {
-	 //»ñÈ¡Êµ¼ÊµÄbeanName£¬È¥³ıbeanFactoryµÄ&£¬¸ù¾İalias»ñÈ¡Êµ¼ÊµÄbeanId
-         final String beanName = this.transformedBeanName(name);
-	 //»ñÈ¡µ¥Àı¶ÔÏó
-         Object sharedInstance = this.getSingleton(beanName);
-         Object bean;
-         if (sharedInstance != null && args == null) {
-             if (this.logger.isDebugEnabled()) {
-                 if (this.isSingletonCurrentlyInCreation(beanName)) {
-                     this.logger.debug("Returning eagerly cached instance of singleton bean '" + beanName + "' that is not fully initialized yet - a consequence of a circular reference");
-                 } else {
-                     this.logger.debug("Returning cached instance of singleton bean '" + beanName + "'");
-                 }
-             }
-	    //µ±Ç°ÀàÊÇfactoryBean¶ÔÏó£¬ÔòÍ¨¹ıÆäÉú³É¶ÔÏó
-	    //Èç¹ûÊÇÆÕÍ¨¶ÔÏó£¬ÔòÖ±½Ó·µ»Ø
-            bean = this.getObjectForBeanInstance(sharedInstance, name, beanName, (RootBeanDefinition)null);
-        } else {
-	    //ÅĞ¶Ï¶àÀıÀàĞÍµÄ¶ÔÏóÊÇ·ñÕıÔÚ´´½¨£¬ÏÔÈ»¿ÉÒÔ¿´³ö£¬·Çµ¥ÀıÈç¹ûÓĞÑ­»·ÒÀÀµµÄ»°£¬»áÖ±½ÓÅ×³öÒì³£
-            if (this.isPrototypeCurrentlyInCreation(beanName)) {
-                throw new BeanCurrentlyInCreationException(beanName);
-            }
-	    //»ñÈ¡¸¸µÄbeanFactory£¬Èç¹û´æÔÚ£¬¶øÇÒµ±Ç°Ã»ÓĞbeanNameµÄ¶¨Òå£¬Ôò´Ó¸¸µÄbeanFactoryÖĞ»ñÈ¡¶ÔÏó
-            BeanFactory parentBeanFactory = this.getParentBeanFactory();
-            if (parentBeanFactory != null && !this.containsBeanDefinition(beanName)) {
-                String nameToLookup = this.originalBeanName(name);
-                if (args != null) {
-                    return parentBeanFactory.getBean(nameToLookup, args);
-                }
-
-                return parentBeanFactory.getBean(nameToLookup, requiredType);
-            }
-	    
-	    //±ê¼ÇbeanµÄ´´½¨
-            if (!typeCheckOnly) {
-                this.markBeanAsCreated(beanName);
-            }
-
-            try {
-	        //»ñÈ¡beanDefinition
-                final RootBeanDefinition mbd = this.getMergedLocalBeanDefinition(beanName);
-		//¼ì²éµ±Ç°Òª´´½¨¶ÔÏóÊÇ·ñÊÇabstract
-                this.checkMergedBeanDefinition(mbd, beanName, args);
-		//»ñÈ¡depend-onÒÀÀµ
-                String[] dependsOn = mbd.getDependsOn();
-                String[] var11;
-		//Îªdepend-onÒÀÀµ´´½¨¶ÔÏó£¬µİ¹éµ÷ÓÃgetBean
-                if (dependsOn != null) {
-                    var11 = dependsOn;
-                    int var12 = dependsOn.length;
-
-                    for(int var13 = 0; var13 < var12; ++var13) {
-                        String dep = var11[var13];
-                        if (this.isDependent(beanName, dep)) {
-                            throw new BeanCreationException(mbd.getResourceDescription(), beanName, "Circular depends-on relationship between '" + beanName + "' and '" + dep + "'");
-                        }
-
-                        this.registerDependentBean(dep, beanName);
-                        this.getBean(dep);
-                    }
-                }
-		//µ¥ÀıµÄ·½Ê½´´½¨¶ÔÏó
-                if (mbd.isSingleton()) {
-                    sharedInstance = this.getSingleton(beanName, new ObjectFactory<Object>() {
-                        public Object getObject() throws BeansException {
-                            try {
-                                return AbstractBeanFactory.this.createBean(beanName, mbd, args);
-                            } catch (BeansException var2) {
-                                AbstractBeanFactory.this.destroySingleton(beanName);
-                                throw var2;
-                            }
-                        }
-                    });
-                    bean = this.getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
-                } else if (mbd.isPrototype()) {
-		//¶àÀıµÄ·½Ê½´´½¨¶ÔÏó
-                    var11 = null;
-
-                    Object prototypeInstance;
-                    try {
-                        this.beforePrototypeCreation(beanName);
-                        prototypeInstance = this.createBean(beanName, mbd, args);
-                    } finally {
-                        this.afterPrototypeCreation(beanName);
-                    }
-
-                    bean = this.getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);
-                } else {
-		    //ÆäËû·½Ê½´´½¨¶ÔÏó
-                    String scopeName = mbd.getScope();
-                    Scope scope = (Scope)this.scopes.get(scopeName);
-                    if (scope == null) {
-                        throw new IllegalStateException("No Scope registered for scope name '" + scopeName + "'");
-                    }
-
-                    try {
-                        Object scopedInstance = scope.get(beanName, new ObjectFactory<Object>() {
-                            public Object getObject() throws BeansException {
-                                AbstractBeanFactory.this.beforePrototypeCreation(beanName);
-
-                                Object var1;
-                                try {
-                                    var1 = AbstractBeanFactory.this.createBean(beanName, mbd, args);
-                                } finally {
-                                    AbstractBeanFactory.this.afterPrototypeCreation(beanName);
-                                }
-
-                                return var1;
-                            }
-                        });
-                        bean = this.getObjectForBeanInstance(scopedInstance, name, beanName, mbd);
-                    } catch (IllegalStateException var21) {
-                        throw new BeanCreationException(beanName, "Scope '" + scopeName + "' is not active for the current thread; consider defining a scoped proxy for this bean if you intend to refer to it from a singleton", var21);
-                    }
-                }
-            } catch (BeansException var23) {
-                this.cleanupAfterBeanCreationFailure(beanName);
-                throw var23;
+protected <T> T doGetBean(String name, Class<T> requiredType, final Object[] args, boolean typeCheckOnly) throws BeansException {
+    //è·å–å®é™…çš„beanNameï¼Œå»é™¤beanFactoryçš„&ï¼Œæ ¹æ®aliasè·å–å®é™…çš„beanId
+    final String beanName = this.transformedBeanName(name);
+    //è·å–å•ä¾‹å¯¹è±¡
+    Object sharedInstance = this.getSingleton(beanName);
+    Object bean;
+    if(sharedInstance != null && args == null) {
+        if(this.logger.isDebugEnabled()) {
+            if(this.isSingletonCurrentlyInCreation(beanName)) {
+                this.logger.debug("Returning eagerly cached instance of singleton bean \'" + beanName + "\' that is not fully initialized yet - a consequence of a circular reference");
+            } else {
+                this.logger.debug("Returning cached instance of singleton bean \'" + beanName + "\'");
             }
         }
 
-        if (requiredType != null && bean != null && !requiredType.isAssignableFrom(bean.getClass())) {
-            try {
-                return this.getTypeConverter().convertIfNecessary(bean, requiredType);
-            } catch (TypeMismatchException var22) {
-                if (this.logger.isDebugEnabled()) {
-                    this.logger.debug("Failed to convert bean '" + name + "' to required type '" + ClassUtils.getQualifiedName(requiredType) + "'", var22);
+        //å½“å‰ç±»æ˜¯factoryBeanå¯¹è±¡ï¼Œåˆ™é€šè¿‡å…¶ç”Ÿæˆå¯¹è±¡
+        //å¦‚æœæ˜¯æ™®é€šå¯¹è±¡ï¼Œåˆ™ç›´æ¥è¿”å›
+        bean = this.getObjectForBeanInstance(sharedInstance, name, beanName, (RootBeanDefinition)null);
+    } else {
+        //åˆ¤æ–­å¤šä¾‹ç±»å‹çš„å¯¹è±¡æ˜¯å¦æ­£åœ¨åˆ›å»ºï¼Œæ˜¾ç„¶å¯ä»¥çœ‹å‡ºï¼Œéå•ä¾‹å¦‚æœæœ‰å¾ªç¯ä¾èµ–çš„è¯ï¼Œä¼šç›´æ¥æŠ›å‡ºå¼‚å¸¸
+        if(this.isPrototypeCurrentlyInCreation(beanName)) {
+            throw new BeanCurrentlyInCreationException(beanName);
+        }
+
+        //è·å–çˆ¶çš„beanFactoryï¼Œå¦‚æœå­˜åœ¨ï¼Œè€Œä¸”å½“å‰æ²¡æœ‰beanNameçš„å®šä¹‰ï¼Œåˆ™ä»çˆ¶çš„beanFactoryä¸­è·å–å¯¹è±¡
+        BeanFactory ex = this.getParentBeanFactory();
+        if(ex != null && !this.containsBeanDefinition(beanName)) {
+            String var24 = this.originalBeanName(name);
+            if(args != null) {
+                return ex.getBean(var24, args);
+            }
+
+            return ex.getBean(var24, requiredType);
+        }
+
+        //æ ‡è®°beançš„åˆ›å»º
+        if(!typeCheckOnly) {
+            this.markBeanAsCreated(beanName);
+        }
+
+        try {
+            //è·å–beanDefinition
+            final RootBeanDefinition ex1 = this.getMergedLocalBeanDefinition(beanName);
+            //æ£€æŸ¥å½“å‰è¦åˆ›å»ºå¯¹è±¡æ˜¯å¦æ˜¯abstract
+            this.checkMergedBeanDefinition(ex1, beanName, args);
+            //è·å–depend-onä¾èµ–
+            String[] dependsOn = ex1.getDependsOn();
+            String[] scopeName;
+            //ä¸ºdepend-onä¾èµ–åˆ›å»ºå¯¹è±¡ï¼Œé€’å½’è°ƒç”¨getBean
+            if(dependsOn != null) {
+                scopeName = dependsOn;
+                int scope = dependsOn.length;
+
+                for(int ex2 = 0; ex2 < scope; ++ex2) {
+                    String dep = scopeName[ex2];
+                    if(this.isDependent(beanName, dep)) {
+                        throw new BeanCreationException(ex1.getResourceDescription(), beanName, "Circular depends-on relationship between \'" + beanName + "\' and \'" + dep + "\'");
+                    }
+
+                    this.registerDependentBean(dep, beanName);
+                    this.getBean(dep);
+                }
+            }
+            //å•ä¾‹çš„æ–¹å¼åˆ›å»ºå¯¹è±¡
+            if(ex1.isSingleton()) {
+                sharedInstance = this.getSingleton(beanName, new ObjectFactory() {
+                    public Object getObject() throws BeansException {
+                        try {
+                            return AbstractBeanFactory.this.createBean(beanName, ex1, args);
+                        } catch (BeansException var2) {
+                            AbstractBeanFactory.this.destroySingleton(beanName);
+                            throw var2;
+                        }
+                    }
+                });
+                bean = this.getObjectForBeanInstance(sharedInstance, name, beanName, ex1);
+            } else if(ex1.isPrototype()) {//å¤šä¾‹çš„æ–¹å¼åˆ›å»ºå¯¹è±¡
+                scopeName = null;
+
+                Object var25;
+                try {
+                    this.beforePrototypeCreation(beanName);
+                    var25 = this.createBean(beanName, ex1, args);
+                } finally {
+                    this.afterPrototypeCreation(beanName);
                 }
 
-                throw new BeanNotOfRequiredTypeException(name, requiredType, bean.getClass());
+                bean = this.getObjectForBeanInstance(var25, name, beanName, ex1);
+            } else {//å…¶ä»–æ–¹å¼åˆ›å»ºå¯¹è±¡
+                String var26 = ex1.getScope();
+                Scope var27 = (Scope)this.scopes.get(var26);
+                if(var27 == null) {
+                    throw new IllegalStateException("No Scope registered for scope name \'" + var26 + "\'");
+                }
+
+                try {
+                    Object var28 = var27.get(beanName, new ObjectFactory() {
+                        public Object getObject() throws BeansException {
+                            AbstractBeanFactory.this.beforePrototypeCreation(beanName);
+
+                            Object var1;
+                            try {
+                                var1 = AbstractBeanFactory.this.createBean(beanName, ex1, args);
+                            } finally {
+                                AbstractBeanFactory.this.afterPrototypeCreation(beanName);
+                            }
+
+                            return var1;
+                        }
+                    });
+                    bean = this.getObjectForBeanInstance(var28, name, beanName, ex1);
+                } catch (IllegalStateException var21) {
+                    throw new BeanCreationException(beanName, "Scope \'" + var26 + "\' is not active for the current thread; consider defining a scoped proxy for this bean if you intend to refer to it from a singleton", var21);
+                }
             }
-        } else {
-            return bean;
+        } catch (BeansException var23) {
+            this.cleanupAfterBeanCreationFailure(beanName);
+            throw var23;
         }
     }
 
+    if(requiredType != null && bean != null && !requiredType.isAssignableFrom(bean.getClass())) {
+        try {
+            return this.getTypeConverter().convertIfNecessary(bean, requiredType);
+        } catch (TypeMismatchException var22) {
+            if(this.logger.isDebugEnabled()) {
+                this.logger.debug("Failed to convert bean \'" + name + "\' to required type \'" + ClassUtils.getQualifiedName(requiredType) + "\'", var22);
+            }
+
+            throw new BeanNotOfRequiredTypeException(name, requiredType, bean.getClass());
+        }
+    } else {
+        return bean;
+    }
+}
+
 ```
 
-1. ¸ù¾İ´«ÈëµÄbeanName»ñÈ¡Êµ¼ÊµÄname
-	* factoryBeanÈç¹ûÊÇÒÔ&¿ªÍ·£¬ÔòÈ¥³ıËü
-	* Èç¹û´«ÈëµÄÊÇÒ»¸öalias£¬Ôò»á·µ»ØÆäÊµ¼ÊµÄbeanId
-2. ¸ù¾İbeanName»ñÈ¡µ¥Àı¶ÔÏó£¨´Ë¶ÔÏóÓĞ¿ÉÄÜÊÇÌáÔç±©Â¶³öÀ´µÄ¶ÔÏó£©£¬Èç¹û¶ÔÏó´æÔÚ£¬Ôò·µ»ØËü¡£
-3. »áÅĞ¶Ïµ±Ç°¶ÔÏóÊÇ·ñÕıÒÔ·Çµ¥ÀıµÄ·½Ê½´´½¨£¬ÕâÀïËµÃ÷Èç¹ûÓĞÑ­»·ÒÀÀµ´æÔÚ£¬ÇÒÑ­»·ÒÀÀµµÄ¶ÔÏó»¹ÊÇ¶àÀıµÄ£¬Ôò»áÅ×³öÒì³£
-4. »ñÈ¡¸¸beanFactory
-5. ±ê¼Ç¶ÔÏóÕıÔÚ´´½¨
-6. ¸ù¾İ¶ÔÏóscope½øĞĞ¶ÔÏóµÄÊµ¼Ê´´½¨¹¤×÷
+1. æ ¹æ®ä¼ å…¥çš„beanNameè·å–å®é™…çš„name
+    * factoryBeanå¦‚æœæ˜¯ä»¥&å¼€å¤´ï¼Œåˆ™å»é™¤å®ƒ
+    * å¦‚æœä¼ å…¥çš„æ˜¯ä¸€ä¸ªaliasï¼Œåˆ™ä¼šè¿”å›å…¶å®é™…çš„beanId
+2. æ ¹æ®beanNameè·å–å•ä¾‹å¯¹è±¡ï¼ˆæ­¤å¯¹è±¡æœ‰å¯èƒ½æ˜¯ææ—©æš´éœ²å‡ºæ¥çš„å¯¹è±¡ï¼‰ï¼Œå¦‚æœå¯¹è±¡å­˜åœ¨ï¼Œåˆ™è¿”å›å®ƒã€‚
+3. ä¼šåˆ¤æ–­å½“å‰å¯¹è±¡æ˜¯å¦æ­£ä»¥éå•ä¾‹çš„æ–¹å¼åˆ›å»ºï¼Œè¿™é‡Œè¯´æ˜å¦‚æœæœ‰å¾ªç¯ä¾èµ–å­˜åœ¨ï¼Œä¸”å¾ªç¯ä¾èµ–çš„å¯¹è±¡è¿˜æ˜¯å¤šä¾‹çš„ï¼Œåˆ™ä¼šæŠ›å‡ºå¼‚å¸¸
+4. è·å–çˆ¶beanFactory
+5. æ ‡è®°å¯¹è±¡æ­£åœ¨åˆ›å»º
+6. æ ¹æ®å¯¹è±¡scopeè¿›è¡Œå¯¹è±¡çš„å®é™…åˆ›å»ºå·¥ä½œ
 
 #### transformedBeanName(name)
 
