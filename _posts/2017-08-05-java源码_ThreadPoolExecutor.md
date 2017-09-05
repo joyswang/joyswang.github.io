@@ -4,11 +4,10 @@ title: java源码-ThreadPoolExecutor
 date: 2017-08-04 16:21:00
 categories:
 - java
-- spring
 tags:
-- spring
 - java
 - 源码
+- 并发
 ---
 
 我们通过源码来瞅瞅java的线程池是如何实现的。
