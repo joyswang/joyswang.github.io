@@ -17,7 +17,7 @@ tags:
 ### getBean方法
 
 通过跟踪spring的源码，会发现bean对象都是通过```AbstractBeanFactory.getBean(参数)```方法来生成的。
-```AbstractBeanFactory.getBean(参数)```方法实际上会去调用```doGetBean(参数)```。
+```AbstractBeanFactory.getBean(参数)```方法实际上会去调用```doGetBean(参数)```。<br/>
 
 ### doGetBean方法
 
@@ -171,4 +171,72 @@ protected <T> T doGetBean(String name, Class<T> requiredType, final Object[] arg
 6. 根据对象scope进行对象的实际创建工作
 
 #### transformedBeanName(name)
+
+```java
+
+protected String transformedBeanName(String name) {
+    return this.canonicalName(BeanFactoryUtils.transformedBeanName(name));
+}
+
+public static String transformedBeanName(String name) {
+    Assert.notNull(name, "\'name\' must not be null");
+
+    String beanName;
+    for(beanName = name; beanName.startsWith("&"); beanName = beanName.substring("&".length())) {
+        ;
+    }
+
+    return beanName;
+}
+
+public String canonicalName(String name) {
+    String canonicalName = name;
+
+    String resolvedName;
+    do {
+        resolvedName = (String)this.aliasMap.get(canonicalName);
+        if(resolvedName != null) {
+            canonicalName = resolvedName;
+        }
+    } while(resolvedName != null);
+
+    return canonicalName;
+}
+
+```
+1. 如果beanName是以&开头，则去除&，有&表示需要获取factoryBean对象，并不是获取factoryBean生成的对象
+2. 如果传入的是alias，则获取其实际的beanId
+
+#### getSingleton(beanName)
+
+```java
+
+public Object getSingleton(String beanName) {
+        return this.getSingleton(beanName, true);
+}
+
+//allowEarlyReference表示是否可以获取过早暴露(还未创建完成)的单例对象
+protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+    Object singletonObject = this.singletonObjects.get(beanName);
+    if(singletonObject == null && this.isSingletonCurrentlyInCreation(beanName)) {
+        Map var4 = this.singletonObjects;
+        synchronized(this.singletonObjects) {
+            singletonObject = this.earlySingletonObjects.get(beanName);
+            if(singletonObject == null && allowEarlyReference) {
+                ObjectFactory singletonFactory = (ObjectFactory)this.singletonFactories.get(beanName);
+                if(singletonFactory != null) {
+                    singletonObject = singletonFactory.getObject();
+                    this.earlySingletonObjects.put(beanName, singletonObject);
+                    this.singletonFactories.remove(beanName);
+                }
+            }
+        }
+    }
+
+    return singletonObject != NULL_OBJECT?singletonObject:null;
+}
+
+```
+1. 如果单例对象已经创建成功的话，这个方法会返回一个单例对象
+2. 这个方法对于解决单例对象的循环依赖起到了很好的作用，具体在这就不讨论了，有兴趣的可以看看我下面贴出的链接！！
 
