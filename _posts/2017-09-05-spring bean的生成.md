@@ -16,8 +16,8 @@ tags:
 
 ### getBean方法
 
-通过跟踪spring的源码，会发现bean对象都是通过```AbstractBeanFactory.getBean(参数)```方法来生成的。
-```AbstractBeanFactory.getBean(参数)```方法实际上会去调用```doGetBean(参数)```方法。
+* 通过跟踪spring的源码，会发现bean对象都是通过```AbstractBeanFactory.getBean(参数)```方法来生成的。
+* ```AbstractBeanFactory.getBean(参数)```方法实际上会去调用```doGetBean(参数)```方法。
 
 ### doGetBean方法
 
@@ -204,7 +204,7 @@ public String canonicalName(String name) {
 }
 
 ```
-1. 如果beanName是以&开头，则去除&，有&表示需要获取factoryBean对象，并不是获取factoryBean生成的对象
+1. 如果beanName是以&开头，则去除&，有&表示```getBean()```获取factoryBean对象，并不是获取factoryBean生成的对象
 2. 如果传入的是alias，则获取其实际的beanId
 
 #### getSingleton(beanName)
