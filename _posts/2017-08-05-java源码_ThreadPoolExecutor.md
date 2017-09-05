@@ -140,7 +140,7 @@ private static int ctlOf(int rs, int wc) { return rs | wc; }
 * 主要分三步
 	- 判断当前线程池中线程数量是否小于```corePoolSize```,小于则添加新的线程，添加成功直接返回
 	- 判断当前是否运行中&向队列中添加线程，判断当前线程数量是否为0，为0则向线程池中添加线程
-	- 如果向队列中添加线程失败，然后就尝试向线程池中添加一个新的线程，失败表示当前线程已经shutdown
+	- 如果向队列中添加线程失败，然后就尝试向线程池中添加一个新的线程，失败则调用```RejectedExecutionHandler```的方法，默认是抛出一个```RejectedExecutionException```异常
 
 ### addWorker(Runnable, boolean)
 
