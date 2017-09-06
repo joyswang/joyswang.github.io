@@ -490,7 +490,7 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] ar
     try {
         // Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
         //给beanPostProcessors一个机会返回一个代理类
-        //内不会调用InstantiationAwareBeanPostProcessor类的postProcessBeforeInstantiation方法
+        //内部会调用InstantiationAwareBeanPostProcessor类的方法
         //aop处理类实现了此接口
         Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
         if (bean != null) {
@@ -513,7 +513,7 @@ protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] ar
 
 1. 保证beanName能正确的解析成class
 2. 标记一下当前方法有没有增强方法
-3. 给beanPostProcessors一个机会，一旦其返回一个对象，则直接使用这个对象；其调用的是```InstantiationAwareBeanPostProcessor```接口类的```postProcessBeforeInstantiation```方法；而aop的处理器则是实现的这个接口的子类```SmartInstantiationAwareBeanPostProcessor```。
+3. 给beanPostProcessors一个机会，一旦其返回一个对象，则直接使用这个对象；其调用的是```InstantiationAwareBeanPostProcessor```接口类的方法；而aop的处理器则是实现的这个接口的子类```SmartInstantiationAwareBeanPostProcessor```。
 4. 如果beanPostProcessors没有返回对象，则走正常的创建bean的流程，把创建的工作交给```doCreateBean(beanName, mbdToUse, args)```方法
 
 #### doCreateBean(beanName, mbdToUse, args)
